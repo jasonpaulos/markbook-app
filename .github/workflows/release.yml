@@ -6,7 +6,7 @@ on:
     - 'v*'
 
 jobs:
-  build-android::
+  build-android:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
