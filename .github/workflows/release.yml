@@ -16,13 +16,16 @@ jobs:
         registry-url: https://npm.pkg.github.com/
         scope: '@jasonpaulos'
     - name: Install npm dependencies
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.GPR_AUTH_TOKEN }}
       run: |
         npm ci
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GPR_AUTH_TOKEN }}
     - name: Build Android Release
       run: |
-        cd android && ./gradlew assembleRelease - MARKBOOK_KEY_PASSWORD='${{ secrets.KEY_PASSWORD }}' - MARKBOOK_STORE_PASSWORD='${{ secrets.STORE_PASSWORD }}'
+        cd android && ./gradlew assembleRelease
+      env:
+        ORG_GRADLE_PROJECT_MARKBOOK_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        ORG_GRADLE_PROJECT_MARKBOOK_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
