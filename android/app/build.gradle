@@ -150,6 +150,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('MARKBOOK_KEY_PASSWORD') && project.hasProperty('MARKBOOK_STORE_PASSWORD')) {
+                storeFile file('release.keystore')
+                storePassword MARKBOOK_STORE_PASSWORD
+                keyAlias 'androidreleasekey'
+                keyPassword MARKBOOK_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
