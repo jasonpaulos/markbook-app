@@ -17,8 +17,8 @@ module.exports = {
   resolver: {
     extraNodeModules: {
       stream: require.resolve('readable-stream'),
-      'solid-auth-cli': require.resolve('@jasonpaulos/solid-auth-client'),
-      'solid-auth-client': require.resolve('@jasonpaulos/solid-auth-client'),
+      'solid-auth-cli': require.resolve('@jasonpaulos/solid-auth-client/lib/index'),
+      'solid-auth-client': require.resolve('@jasonpaulos/solid-auth-client/lib/index'),
     },
   },
 };

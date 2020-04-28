@@ -1,6 +1,6 @@
 import { Linking } from 'react-native';
 import { URL } from 'whatwg-url';
-import auth from "@jasonpaulos/solid-auth-client";
+import auth from "@jasonpaulos/solid-auth-client/lib/index";
 
 export function init() {
   Linking.addEventListener('url', handleOpenURL);
