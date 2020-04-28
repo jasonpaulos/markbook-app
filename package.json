@@ -12,6 +12,7 @@
   "dependencies": {
     "@jasonpaulos/rdflib": "^1.1.0",
     "@jasonpaulos/solid-auth-client": "^2.4.1",
+    "@react-native-community/async-storage": "^1.9.0",
     "assert": "^2.0.0",
     "buffer": "^5.6.0",
     "events": "^3.1.0",

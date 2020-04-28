@@ -1,22 +1,41 @@
 import { Linking } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { URL } from 'whatwg-url';
 import auth from "@jasonpaulos/solid-auth-client/lib/index";
+
+const sessionStorageKey = 'solid-session';
 
 export function init() {
   Linking.addEventListener('url', handleOpenURL);
 
-  Linking.getInitialURL()
-    .then(url => {
-      if (url) {
-        handleOpenURL({ url })
-      }
-    }, err => {
-      console.warn('Could not get initial app URL: ', err);
-    });
+  loadSession();
 
   return () => {
     Linking.removeEventListener('url', handleOpenURL)
   };
+}
+
+async function loadSession() {
+  let url = null;
+  try {
+    url = await Linking.getInitialURL();
+  } catch (err) {
+    console.warn('Could not get initial app URL: ', err);
+  }
+
+  if (url) {
+    handleOpenURL({ url });
+    return;
+  }
+
+  try {
+    const session = await AsyncStorage.getItem(sessionStorageKey);
+    if (session) {
+      await auth.setSession(JSON.parse(session));
+    }
+  } catch (err) {
+    console.warn('Could not read saved session: ', err);
+  }
 }
 
 async function handleOpenURL({ url }: { url: string }) {
@@ -25,7 +44,10 @@ async function handleOpenURL({ url }: { url: string }) {
   if (sessionStr) {
     try {
       const session = JSON.parse(decodeURIComponent(sessionStr));
-      await auth.setSession(session);
+      await Promise.all([
+        auth.setSession(session),
+        AsyncStorage.setItem(sessionStorageKey, JSON.stringify(session)),
+      ]);
     } catch (err) {
       console.warn('Could not set session from url: ', err);
     }
@@ -45,5 +67,8 @@ export function logIn(): Promise<void> {
 }
 
 export function logOut(): Promise<void> {
-  return auth.logout();
+  return Promise.all([
+    auth.logout(),
+    AsyncStorage.removeItem(sessionStorageKey),
+  ]).then(() => {});
 }
