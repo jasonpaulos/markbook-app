@@ -41,7 +41,7 @@ export function onSessionChange(handler: (session: { webId: string } | null) => 
 export const authenticatedFetch = auth.fetch;
 
 export function logIn(): Promise<void> {
-  return Linking.openURL('http://localhost:5000#appLogin');
+  return Linking.openURL('https://jasonpaulos.github.io/markbook-app/#appLogin');
 }
 
 export function logOut(): Promise<void> {
