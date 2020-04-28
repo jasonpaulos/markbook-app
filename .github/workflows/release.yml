@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Get tag name
+      id: tag_name
+      run: echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
@@ -44,5 +47,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./android/app/build/outputs/apk/release/app-release.apk
-        asset_name: markbook-${{ github.ref }}.apk
+        asset_name: markbook-${{ steps.tag_name.outputs.SOURCE_TAG }}.apk
         asset_content_type: application/vnd.android.package-archive
